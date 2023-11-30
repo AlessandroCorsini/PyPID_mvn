@@ -6,7 +6,7 @@ Right now this implementation works only for the bivariate case (two sources and
 For a broader implementation of the Partial Information Decomposition please see the [partial-info-decomp](https://github.com/robince/partial-info-decomp) repository
 
 How to use it:
-
+```python
     from gcmi import copnorm
     import numpy as np
     
@@ -49,6 +49,6 @@ How to use it:
         PIs[tar,:] = pid_mvn.calc_pi_mvn(lat, Cfull=C, varsizes=[1,1,1], Icap=pid_mvn.Iccs_mvn, forcenn=True).PI
 
       return PIs
-
+```
 
 This function uses the code in this repository and the copnorm function that can be found [here](https://github.com/robince/gcmi/tree/master/python) to compute the partial information decomposition for every channel of the Y variable.
