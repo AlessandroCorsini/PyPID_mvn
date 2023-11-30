@@ -3,6 +3,8 @@ This repository implements the PID (Partial Information Decomposition) for Multi
 
 Right now this implementation works only for the bivariate case (two sources and one target)
 
+For a broader implementation of the Partial Information Decomposition please see the [partial-info-decomp](https://github.com/robince/partial-info-decomp) repository
+
 How to use it:
 
     from gcmi import copnorm
