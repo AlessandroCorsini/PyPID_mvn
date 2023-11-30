@@ -10,32 +10,43 @@ How to use it:
     from gcmi import copnorm
     import numpy as np
     
-    def partial_information_decomposition(X, Y, Z):
-    
+    def partial_information_decomposition(X,Y):
+      
       '''
-      Compute the partial information decomposition between the sources X,Y and possibly multivariate Z using the Iccs redundancy measure for continuous gaussian variables.
+      Compute the partial information decomposition between the two sources in X and each target in Y using the Iccs redundancy measure for continuous gaussian variables.
+
+      Parameters:
+      X : np.array
+        The matrix containing the two sources. The sources are in rows so the shape is (n_sources, n_samples)
+      Y : np.array
+        The matrix containing the targets. Each target is treated separately and could be e.g., a different EEG channel. The targets are in rows so the shape is (n_targtes, n_samples)
       '''
 
+      # Check for right dimensionality
+      n_sources = X.shape[0]
+      if n_sources != 2:
+        raise ValueError('This pid version only works in the case of two sources')
+      
       # Build the empty 2D lattice
       lat = pid_mvn.Lattice2D()
 
-      # Be sure that Z is a 2D array
-      Z = np.atleast_2d(Z)
+      # Be sure that Y is a 2D array
+      Y = np.atleast_2d(Y)
 
       # Copula normalization of the variables to make them gaussian
-      X_copnorm = gcmi.copnorm(X).squeeze()
-      Y_copnorm = gcmi.copnorm(Y).squeeze()
-      Z_copnorm = gcmi.copnorm(Z)
+      X_copnorm = gcmi.copnorm(X)
+      Y_copnorm = gcmi.copnorm(Y)
 
       # Prepare the data structure
-      PIs = np.zeros((Z.shape[0], 4)) # (n_channels, 4) (Rdn, Unq1, Unq2, Syn)
+      n_targets = Y.shape[0]
+      PIs = np.zeros((n_targets, 4)) # e.g., (n_channels, 4) (Rdn, Unq1, Unq2, Syn)
 
-      # Compute the empirical covariance matrix
-      for ch in range(Z.shape[0]):
-        C = np.cov(np.array([X_copnorm, Y_copnorm, Z_copnorm[ch,:]]))
+      # Compute the sample covariance matrix
+      for tar in range(n_targets):
+        C = np.cov(np.vstack((X_copnorm,Y_copnorm[tar,:])))
 
         # Compute the 4 partial information atoms
-        PIs[ch,:] = pid_mvn.calc_pi_mvn(lat, Cfull=C, varsizes=[1,1,1], Icap=pid_mvn.Iccs_mvn, forcenn=True).PI
+        PIs[tar,:] = pid_mvn.calc_pi_mvn(lat, Cfull=C, varsizes=[1,1,1], Icap=pid_mvn.Iccs_mvn, forcenn=True).PI
 
       return PIs
 
