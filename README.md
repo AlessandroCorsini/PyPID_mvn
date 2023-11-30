@@ -1,5 +1,5 @@
 # PyPID_mvn
-This repository implements the PID (Partial Information Decomposition) for MultiVariate Normal (MVN) systems measuring the redundancy using the Iccs measure developed by Ince (2017)  https://doi.org/10.3390/e19070318
+This repository implements the PID (Partial Information Decomposition) for Multivariate Normal (MVN) systems measuring the redundancy using the Iccs measure developed by Ince (2017)  https://doi.org/10.3390/e19070318
 
 Right now this implementation works only for the bivariate case (two sources and one target)
 
@@ -51,4 +51,4 @@ How to use it:
       return PIs
 
 
-This function uses the code in this repository and the copnorm function that can be found [here](https://github.com/robince/gcmi/tree/master/python) to compute the partial information decomposition for every channel of the Z variable. Z could be the EEG time-series of all the channels.
+This function uses the code in this repository and the copnorm function that can be found [here](https://github.com/robince/gcmi/tree/master/python) to compute the partial information decomposition for every channel of the Y variable.
